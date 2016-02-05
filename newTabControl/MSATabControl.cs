@@ -209,20 +209,7 @@ namespace newTabControl
         }
         protected override void OnClientSizeChanged(EventArgs e)///auto resize MSATabPage
         {
-            Rectangle tabcontrolloc = ClientRectangle;
-            Point newLoc = new Point(0, 25);
-            Size newSize = tabcontrolloc.Size;
-            foreach (Control item in Controls)
-            {
-                if (item is MSATabPage)
-                {
-                    if (item == SelectedPage)
-                    {
-                        item.Location = newLoc;
-                        item.Size = newSize;
-                    }
-                }
-            }
+            refreshPages();
             refreshButtons();
             base.OnClientSizeChanged(e);
         }
