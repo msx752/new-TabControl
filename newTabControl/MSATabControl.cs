@@ -166,9 +166,9 @@ namespace newTabControl
             _Pagecounter++;
         }
 
-        public void RemovePage(Control removedPage)
+        public void RemovePage(MSATabPage removedPage)
         {
-            if ((removedPage as MSATabPage).ClosePage())
+            if (removedPage.ClosePage())
             {
                 Controls.Remove(removedPage);
                 int currentIndex = 0;
@@ -180,7 +180,7 @@ namespace newTabControl
                         currentIndex = i;
                         if (currentIndex == PageButtons.Count())
                             currentIndex--;
-                        PageButtonLineUp.Remove(removedPage.Tag.ToString());
+                        PageButtonLineUp.Remove(removedPage.ButtonName);
                         refreshButtons();
                         break;
                     }
