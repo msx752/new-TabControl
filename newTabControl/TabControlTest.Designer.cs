@@ -35,9 +35,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(208, 142);
+            this.button1.Location = new System.Drawing.Point(110, 68);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(147, 29);
+            this.button1.Size = new System.Drawing.Size(107, 30);
             this.button1.TabIndex = 0;
             this.button1.Text = "ADD TAB MENU";
             this.button1.UseVisualStyleBackColor = true;
@@ -48,8 +48,11 @@
             this.msaTabControl1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("msaTabControl1.BackgroundImage")));
             this.msaTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.msaTabControl1.Location = new System.Drawing.Point(0, 0);
+            this.msaTabControl1.MyProperty = 0;
             this.msaTabControl1.Name = "msaTabControl1";
             this.msaTabControl1.SelectedPage = null;
+            this.msaTabControl1.ShowCloseButton = false;
+            this.msaTabControl1.ShowSwitchButton = false;
             this.msaTabControl1.Size = new System.Drawing.Size(454, 251);
             this.msaTabControl1.TabIndex = 1;
             this.msaTabControl1.Text = "msaTabControl1";
@@ -62,7 +65,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.msaTabControl1);
             this.Name = "TabControlTest";
-            this.Text = "Tab Control";
+            this.Text = "Tab Control Test";
             this.ResumeLayout(false);
 
         }
