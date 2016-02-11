@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace newTabControl
@@ -16,11 +10,14 @@ namespace newTabControl
     [Browsable(false)]
     public partial class MSATabControl : Control
     {
+        private bool _closebtn = false;
+
         //private MSATabPage _currpage;
         private int _Pagecounter = 0;
 
-        string _selectedPage = "";
+        private string _selectedPage = "";
 
+        private bool _switchbtn = false;
         private Color activePageButtonColor = Color.FromArgb(45, 45, 45);
 
         private Color otherPageButtonColor = Color.FromArgb(16, 12, 16);
@@ -28,7 +25,6 @@ namespace newTabControl
         private List<string> PageButtonLineUp = new List<string>();
 
         private ContextMenuStrip SwitchMenu = new ContextMenuStrip();
-
         public MSATabControl()
         {
             InitializeComponent();
@@ -69,8 +65,13 @@ namespace newTabControl
         }
 
         public event EventHandler<ControlEventArgs> MSATabPageClosed;
+
         public event EventHandler<ControlEventArgs> MSATabPageOpened;
+
         public event EventHandler<ControlEventArgs> SelectedPageChanged;
+
+        public int MyProperty { get; set; }
+
         public Control[] PageButtons //BUTTON LIST
         {
             get
@@ -151,7 +152,32 @@ namespace newTabControl
                         refreshPages();
                     }
                 }
+            }
+        }
 
+        public bool ShowCloseButton
+        {
+            get { return _closebtn; }
+            set
+            {
+                _closebtn = value;
+                if (this.Controls.Find("btcClose", false).Count() > 0)
+                {
+                    this.Controls["btcClose"].Visible = _closebtn;
+                }
+            }
+        }
+
+        public bool ShowSwitchButton
+        {
+            get { return _switchbtn; }
+            set
+            {
+                _switchbtn = value;
+                if (this.Controls.Find("btsSwitch", false).Count() > 0)
+                {
+                    this.Controls["btsSwitch"].Visible = _switchbtn;
+                }
             }
         }
         public void AddPage(MSATabPage newPage)//you mustn't use like "Control.Add(MSATablePage)"
@@ -207,6 +233,7 @@ namespace newTabControl
         {
             return Name;
         }
+
         protected override void OnClientSizeChanged(EventArgs e)///auto resize MSATabPage
         {
             refreshPages();
@@ -339,11 +366,13 @@ namespace newTabControl
             string MSATPage = (Controls[MSATPageTitleButton] as Button).Tag.ToString();
             SelectedPage = Controls[MSATPage] as MSATabPage;
         }
+
         private void refreshButtons()
         {
             int currentTabControlWidth = Width - 100;
             int currrentButtonWidth = 0;
             ButtonLineUpVisibleControl();
+            bool _aboutswitch = false;
             for (int i = 0; i < PageButtonLineUp.Count; i++)
             {
                 if (SelectedPage != null)
@@ -365,7 +394,10 @@ namespace newTabControl
                         Controls[PageButtonLineUp[i]].Visible = true;
                     }
                     else
+                    {
                         Controls[PageButtonLineUp[i]].Visible = false;
+                        _aboutswitch = true;
+                    }
                     if (Controls[PageButtonLineUp[i]].Tag.ToString() == SelectedPage.Name)
                         Controls[PageButtonLineUp[i]].BackColor = activePageButtonColor;
                     else
@@ -386,6 +418,12 @@ namespace newTabControl
                     break;
             }
             ButtonLineUpVisibleControl();
+
+            ShowSwitchButton = _aboutswitch;
+            if (PageButtonLineUp.Count == 0)
+                ShowCloseButton = false;
+            else
+                ShowCloseButton = true;
         }
 
         private void refreshPages()
@@ -406,13 +444,14 @@ namespace newTabControl
             string MSATPage = (sender as ToolStripItem).Tag.ToString();
             Control MSATPageClosed = Controls[MSATPage];
             if (MSATPageClosed != null)
-                RemovePage(MSATPageClosed);
+                RemovePage(MSATPageClosed as MSATabPage);
         }
     }
 
     public class MSATabPageClosingEventArgs : FormClosingEventArgs
     {
         private Control _ctrl;
+
         public MSATabPageClosingEventArgs(CloseReason closeReason, bool cancel, MSATabPage ctrl) : base(closeReason, cancel)
         {
             Control = ctrl;

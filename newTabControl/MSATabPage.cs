@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace newTabControl
@@ -37,7 +31,9 @@ namespace newTabControl
         }
 
         public event EventHandler<FormClosingEventArgs> MSATabPageClosing = null;
+
         public bool isNeedSave { get; set; } = false;
+
         public string PageTitle
         {
             get { return _pagetitle; }
@@ -51,6 +47,7 @@ namespace newTabControl
         }
 
         internal string ButtonName { get; set; } = "";
+
         public bool ClosePage()
         {
             if (isNeedSave)
@@ -74,6 +71,7 @@ namespace newTabControl
             if (MSATabPageClosing != null)
                 MSATabPageClosing.Invoke(this, e);
         }
+
         public override string ToString()
         {
             return Name;
@@ -81,7 +79,6 @@ namespace newTabControl
 
         private void MSATabPage_MSATabPageClosing(object sender, FormClosingEventArgs e)
         {
-
         }
     }
 }
